@@ -20,6 +20,3 @@ Once the files are decrypted they will be about 10-20% smaller than the original
 As I mentioned before that this project was built on the idea of DNA I intended to be able to create a 'nucleus' of sorts, which would just be one fat zip of .dan files. These could then be decompressed when needed and then decrypted to regenerate the original source code they were created from. The implementations would be in any volatile sort of environment, perhaps a Ramdisc of sorts? In this environment the source code would be erased when the disc was removed, and would have to be copied back into the drive once it restarts. The purpose of a DAN nucleus would be restoration of original functionality in most imagined cases.
 
 This has been a personal toy of mine for some time, and there are many versions of this written in many other languages attempting to look around for performance. At some point I will most likely release a C++ version which I would deem the fastest at this time. Feel free to tinker with what I have provided you until then. Enjoy!
-
-NOTE::
-I am aware there is a little bug in the % completion statements, it goes to 100% and then restarts at 0%. This isn't actually what it's doing, just a little mistake on my part, everything is functioning normally if you are wondering.
