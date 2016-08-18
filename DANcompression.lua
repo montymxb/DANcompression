@@ -45,6 +45,10 @@ local function startDan()
 end
 
 function encrypt()
+	
+	-- initialize our last marker
+	lastMarker = 10
+
 	local encrypted={}
 	local fileContents=openFile()
 	local keyContents=getKeys()
@@ -60,7 +64,7 @@ function encrypt()
 		end
 	end
 	local encryptString=table.concat(encrypted)
-	print("Writing encrypted file...")
+	print("100%, Writing encrypted file...")
 	local ef=io.open(fn .. ".dan","w")
 	ef:write(encryptString)
 	ef:close()
@@ -70,15 +74,19 @@ function encrypt()
 end
 
 function decrypt()
+
+	-- initialize our last marker
+	lastMarker = 10
 	
 	local result={}
 	local fileContents=openFile()
 	local keyContents=getKeys()
+	local fileSize = #fileContents
 	print("____DECRYPTING____")
 	for x=1,#fileContents,5 do
-		announceProgress(x,#fileContents)
+		announceProgress(x, fileSize)
 		local sequence=fileContents:sub(x,x+4)
-		for y=1,#keyContents do
+		for y=1,fileSize do
 			if keyContents:sub(y+1,y+1)=="=" and keyContents:sub(y+2,y+2)~="=" then
 				if tonumber(sequence)==tonumber(keyContents:sub(y+2,y+7)) then
 					result[#result+1]=keyContents:sub(y,y)
@@ -87,7 +95,7 @@ function decrypt()
 			end
 		end
 	end
-	print("Writing decrypted file\n")
+	print("100%, Writing decrypted file\n")
 	local real=table.concat(result)
 	fn=string.gsub(fn,"dan","comp")
 	local df=io.open(fn,"w")
@@ -118,19 +126,17 @@ function openFile()
 	return t
 end
 
-function announceProgress(curLoc,size)
-	if measureMe==nil then
-		measureMe=0
-	end
-	if (curLoc/size)*100 > measureMe then
-		measureMe=measureMe+1
-		if (measureMe)%10==0 then
-			print(measureMe .. "% complete")
-			--resets measure variable on completion
-			if measureMe==100 then
-				measureMe=0
-			end
-		end
+-- announces current progress
+function announceProgress(curLoc, size)
+
+	-- get % completion
+	local completionPercent = curLoc / size * 100
+	
+	if completionPercent > lastMarker then
+		-- increment by 10% and print completion rate
+		print(lastMarker .. "%")
+		lastMarker=lastMarker+10
+		
 	end
 end
 
